@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sdui/sdui.dart';
 
-import 'my_widget.dart';
+// import 'my_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   // Register 3rd party widgets
-  SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
+  // SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
 
   runApp(const MyApp());
 }
@@ -17,106 +16,62 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Demo',
-      initialRoute: '/',
-      routes: _routes(),
+      // initialRoute: '/',
+      // routes: _routes(),
       debugShowCheckedModeBanner: false,
-      navigatorObservers: [sduiRouteObserver],
+      // navigatorObservers: [sduiRouteObserver],
+      home: Home(),
     );
   }
 
-  Map<String, WidgetBuilder> _routes() => {
-        '/': (context) =>
-            DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
-        '/static': (context) =>
-            DynamicRoute(provider: StaticRouteContentProvider(staticJson)),
-        '/remote': (context) => const DynamicRoute(
-            provider: HttpRouteContentProvider(
-                'http://10.0.2.2:8080/onboard' /* Remove endpoint - Replace it with your own */
-                )),
-      };
+// Map<String, WidgetBuilder> _routes() => {
+//       '/': (context) => const Home(),
+//       '/static': (context) =>
+//           DynamicRoute(provider: StaticRouteContentProvider(staticJson)),
+//       '/remote': (context) => const DynamicRoute(
+//           provider: HttpRouteContentProvider(
+//               'http://10.0.2.2:8080/onboard' /* Remove endpoint - Replace it with your own */
+//               )),
+//     };
+}
+
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Xin la xin vinh biet cu"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                (context) => DynamicRoute(
+                    provider: StaticRouteContentProvider(staticJson));
+              },
+              icon: const Icon(Icons.paid_rounded))
+        ],
+      ),
+      body: DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.title), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: "Label"),
+          BottomNavigationBarItem(icon: Icon(Icons.token), label: "Fake"),
+        ],
+      ),
+    );
+  }
 }
 
 var homeJson = '''
 {
-  "type": "Screen",
-  "appBar": {
-    "type": "AppBar",
-    "attributes": {
-      "title": "Home",
-      "actions":[
-        {
-          "type": "Container",
-          "attributes": {
-            "padding": 10.0
-          },
-          "children":[
-            {
-              "type": "Icon",
-              "attributes":{
-                "code": "f27b"
-              }
-            }
-          ],
-          "action":{
-            "type": "Route",
-            "url": "route:/static",
-            "trackEvent": "event01"
-          }
-        }
-      ]
-    }
-  },
-  "bottomNavigationBar": {
-    "type": "BottomNavigationBar",
-    "attributes":{
-      "background": "#1D7EDF",
-      "selectedItemColor": "#ffffff",
-      "unselectedItemColor": "#ffffff"
-    },
-    "children":[
-      {
-        "type": "BottomNavigationBarItem",
-        "attributes": {
-          "icon": "f107",
-          "caption": "Home"
-        },
-        "action":{
-          "type": "Route",
-          "url": "route:/~",
-          "trackEvent": "event-home"
-        }
-      },
-      {
-        "type": "BottomNavigationBarItem",
-        "attributes": {
-          "icon": "f27b",
-          "caption": "Me"
-        },
-        "action":{
-          "type": "Route",
-          "url": "route:/static"
-        }
-      },
-      {
-        "type": "BottomNavigationBarItem",
-        "attributes": {
-          "icon": "e211",
-          "caption": "Remote"
-        },
-        "action":{
-          "type": "Route",
-          "url": "route:/remote"
-        }
-      }
-    ]
-  },
-  "child": {
     "type": "Center",
     "children": [
       {
-        "type": "MyWidget",
+        "type": "Text",
         "attributes": {
           "caption": "Sample Project",
           "padding": 5.0,
@@ -124,13 +79,8 @@ var homeJson = '''
         }
       }
     ]
-  },
-  "attributes":{
-    "id": "page.home"
   }
-}
 ''';
-
 var staticJson = '''
 {
   "type": "Screen",
