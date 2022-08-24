@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sdui/sdui.dart';
+import 'package:sdui_handle/screen_2.dart';
 
-// import 'my_widget.dart';
+import 'my_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Register 3rd party widgets
-  // SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
+  SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
 
   runApp(const MyApp());
 }
@@ -37,25 +38,42 @@ class MyApp extends StatelessWidget {
 //     };
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static final List<Widget> _widgetOptions = [
+    DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
+    Center(
+        child: DynamicRoute(provider: StaticRouteContentProvider(staticJson))),
+    const Screen2()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Xin la xin vinh biet cu"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                (context) => DynamicRoute(
-                    provider: StaticRouteContentProvider(staticJson));
-              },
-              icon: const Icon(Icons.paid_rounded))
-        ],
       ),
-      body: DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.title), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.message), label: "Label"),
@@ -66,12 +84,17 @@ class Home extends StatelessWidget {
   }
 }
 
+// "action":{
+//     "type": "Route",
+//     "url": "route:/screen2"
+//
+//   }
 var homeJson = '''
 {
     "type": "Center",
     "children": [
       {
-        "type": "Text",
+      "type": "Text",
         "attributes": {
           "caption": "Sample Project",
           "padding": 5.0,
@@ -84,55 +107,6 @@ var homeJson = '''
 var staticJson = '''
 {
   "type": "Screen",
-  "appBar": {
-    "type": "AppBar",
-    "attributes": {
-      "title": "Profile"
-    }
-  },
-  "bottomNavigationBar": {
-    "type": "BottomNavigationBar",
-    "attributes":{
-      "background": "#1D7EDF",
-      "selectedItemColor": "#ffffff",
-      "unselectedItemColor": "#ffffff"
-    },
-    "children":[
-      {
-        "type": "BottomNavigationBarItem",
-        "attributes": {
-          "icon": "f107",
-          "caption": "Home"
-        },
-        "action":{
-          "type": "Route",
-          "url": "route:/~"
-        }
-      },
-      {
-        "type": "BottomNavigationBarItem",
-        "attributes": {
-          "icon": "f27b",
-          "caption": "Me"
-        },
-        "action":{
-          "type": "Route",
-          "url": "route:/static"
-        }
-      },
-      {
-        "type": "BottomNavigationBarItem",
-        "attributes": {
-          "icon": "e211",
-          "caption": "Remote"
-        },
-        "action":{
-          "type": "Route",
-          "url": "route:/remote"
-        }
-      }
-    ]
-  },
   "child": {
     "type": "Form",
     "attributes": {
