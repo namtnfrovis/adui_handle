@@ -7,7 +7,7 @@ import 'my_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Register 3rd party widgets
-  SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
+  // SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
 
   runApp(const MyApp());
 }
@@ -20,21 +20,23 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Demo',
       // initialRoute: '/',
-      // routes: _routes(),
+      // routes: routes(),
       debugShowCheckedModeBanner: false,
       // navigatorObservers: [sduiRouteObserver],
       home: Home(),
     );
   }
-
-// Map<String, WidgetBuilder> _routes() => {
-//       '/': (context) => const Home(),
+// Map<String, WidgetBuilder> routes() =>
+//     {
+//       '/': (context) =>
+//           DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
 //       '/static': (context) =>
 //           DynamicRoute(provider: StaticRouteContentProvider(staticJson)),
-//       '/remote': (context) => const DynamicRoute(
+//       '/remote': (context) =>
+//       const DynamicRoute(
 //           provider: HttpRouteContentProvider(
 //               'http://10.0.2.2:8080/onboard' /* Remove endpoint - Replace it with your own */
-//               )),
+//           )),
 //     };
 }
 
@@ -47,9 +49,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = [
     DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
     Center(
@@ -119,7 +118,7 @@ var staticJson = '''
         "attributes": {
           "id": "first_name",
           "name": "first_name",
-          "value": "Ray",
+          "value": "Mafia",
           "caption": "First Name",
           "maxLength": 30,
           "minLength": 5
@@ -130,7 +129,7 @@ var staticJson = '''
         "attributes": {
           "id": "last_name",
           "name": "last_name",
-          "value": "Sponsible",
+          "value": "Internet",
           "caption": "Last Name",
           "maxLength": 30
         }

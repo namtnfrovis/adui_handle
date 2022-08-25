@@ -39,16 +39,18 @@ class _Screen2State extends State<Screen2> {
             sduiWidgets.add(FlutterLogo(size: element['size']));
             break;
           case 'TextFormField':
-            sduiWidgets.add(Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: element['labelText'],
-                  border: const OutlineInputBorder(),
+            sduiWidgets.add(
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: element['labelText'],
+                    border: const OutlineInputBorder(),
+                  ),
+                  obscureText: element['obscure'],
                 ),
-                obscureText: element['obscure'],
               ),
-            ));
+            );
             break;
           case 'TextButton':
             sduiWidgets.add(Padding(
