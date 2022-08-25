@@ -56,6 +56,15 @@ var homeJson = '''
         }
       },
       {
+        "type": "Image",
+        "attributes": {
+          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
+          "width" : 200.0,
+          "height": 200.0,
+          "fit" : "none"
+        }
+      },
+      {
         "type": "Input",
         "attributes": {
           "id": "first_name",
