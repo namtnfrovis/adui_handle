@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sdui/sdui.dart';
-import 'package:sdui_handle/screen_2.dart';
+import 'package:sdui_handle/home_full_screen.dart';
+import 'package:sdui_handle/screen_login.dart';
 
 import 'my_widget.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Register 3rd party widgets
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // // Register 3rd party widgets
   // SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
-
   runApp(const MyApp());
 }
 
@@ -51,16 +51,32 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = [
     DynamicRoute(provider: StaticRouteContentProvider(homeJson)),
-    Center(
-        child: DynamicRoute(provider: StaticRouteContentProvider(staticJson))),
-    const Screen2()
+    const Page2(),
+    const ScreenLogin()
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SDUIWidgetRegistry.getInstance().register('MyWidget', () => MyWidget());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Xin la xin vinh biet cu"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomeFullScreen()));
+              },
+              icon: const Icon(Icons.face))
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -74,36 +90,55 @@ class _HomeState extends State<Home> {
           });
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.title), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: "Label"),
-          BottomNavigationBarItem(icon: Icon(Icons.token), label: "Fake"),
+          BottomNavigationBarItem(icon: Icon(Icons.image), label: "Image"),
+          BottomNavigationBarItem(icon: Icon(Icons.key), label: "Info"),
+          BottomNavigationBarItem(icon: Icon(Icons.login), label: "Login"),
         ],
       ),
     );
   }
 }
 
-// "action":{
-//     "type": "Route",
-//     "url": "route:/screen2"
-//
-//   }
+class Page2 extends StatefulWidget {
+  const Page2({Key? key}) : super(key: key);
+
+  @override
+  State<Page2> createState() => _Page2State();
+}
+
+class _Page2State extends State<Page2> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DynamicRoute(provider: StaticRouteContentProvider(firstName)),
+        const SizedBox(
+          width: 100,
+          height: 100,
+          child: Icon(Icons.pin_drop_outlined),
+        ),
+        DynamicRoute(provider: StaticRouteContentProvider(lastName)),
+        DynamicRoute(provider: StaticRouteContentProvider(sub)),
+      ],
+    );
+  }
+}
+
 var homeJson = '''
 {
-"type": "Column",
-"children":[
-{
-   "type": "Text",
+  "type": "Screen",
+  "child": {
+    "type": "Form",
+    "children": [
+      {
+        "type": "MyWidget",
         "attributes": {
-          "caption": "Sample Project",
+          "caption": "Welcome to mafia internet",
           "padding": 5.0,
           "margin": 5.0
         }
       },
       {
-      "type": "row",
-      "children": [
-        {
         "type": "Image",
         "attributes": {
           "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
@@ -112,338 +147,6 @@ var homeJson = '''
           "fit" : "none"
         }
       },
-      {
-      "type": "spacer"
-      },
-        {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 200.0,
-          "height": 200.0,
-          "fit" : "none"
-        }
-      }
-      ]
-      },
-      {
-      "type": "expanded",
-      "child": {
-      "type": "gridview",
-      "crossAxisSpacing": 3,
-      "mainAxisSpacing": 3,
-      "crossAxisCount": 3,
-      "padding": 0.0,
-      "primary": false,
-      "children": [
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-       {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 100.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      }
-      ]
-      }
-      },
-      
-      
-            {
-      "type": "expanded",
-      "child": {
-      "type": "listview",
-      "direction": "vertical",
-      "separator": true,
-      "children": [
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-            {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-            {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },{
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },{
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },{
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },{
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },
-      {
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },{
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      },{
-        "type": "Image",
-        "attributes": {
-          "url" : "https://play-lh.googleusercontent.com/DTzWtkxfnKwFO3ruybY1SKjJQnLYeuK3KmQmwV5OQ3dULr5iXxeEtzBLceultrKTIUTr",
-          "width" : 500.0,
-          "height": 100.0,
-          "fit" : "none"
-        }
-      }
-      
-      
-      
-      
-      
-      
-      
-      ]
-      }
-      }
-]
-}
-''';
-var staticJson = '''
-{
-  "type": "Screen",
-  "child": {
-    "type": "Form",
-    "attributes": {
-      "id": "form",
-      "padding": 10
-    },
-    "children": [
       {
         "type": "Input",
         "attributes": {
@@ -531,7 +234,53 @@ var staticJson = '''
     ]
   },
   "attributes":{
-    "id": "page.static"
+    "id": "page.home"
   }
 }
+''';
+
+var firstName = '''{
+        "type": "Input",
+        "attributes": {
+          "id": "first_name",
+          "name": "first_name",
+          "value": "Mafia",
+          "caption": "First Name",
+          "maxLength": 30,
+          "minLength": 5
+        }
+      }''';
+var lastName = '''{
+        "type": "Input",
+        "attributes": {
+          "id": "last_name",
+          "name": "last_name",
+          "value": "Internet",
+          "caption": "Last Name",
+          "maxLength": 30
+        }
+      }''';
+var sub = '''
+{
+        "type": "Input",
+        "attributes": {
+          "id": "submit",
+          "type": "Submit",
+          "name": "submit",
+          "caption": "Create Profile"
+        },
+        "action": {
+          "type": "Command",
+          "url": "https://myapp.herokuapp.com/commands/save-profile",
+          "trackEvent": "create-event",
+          "prompt": {
+            "type": "Dialog",
+            "attributes": {
+              "type": "confirm",
+              "title": "Confirmation",
+              "message": "Are you sure you want to change your profile?"
+            }
+          }
+        }
+      }
 ''';
